@@ -1,19 +1,29 @@
-﻿using Domain.Interfaces;
-using Domain.Object;
+﻿//using Domain.Interfaces;
+//using Domain.Object;
 
-namespace Domain
-{
-    public class ClientManager : IClientManager
-    {
-        public ClientManager() { }
+//namespace Domain
+//{
+//    public class ClientAdministration : IClientAdministration
+//    {
 
-        //too many parameter, refactor
-        public Client CreateClient(string patientName, string animalType)
-        {
-            Patient patient = new Patient(Guid.NewGuid(), patientName, animalType);
-            Client client = new Client(patient);
+//        public ClientAdministration() 
+//        { 
+            
+//        }
 
-            return client;
-        }
-    }
-}
+//        //this function might grow with too much parameter
+//        //error handling can be done with enum of error
+//        public bool CreateClient(string clientName, string patientName, string animalType, out Client createdClient)
+//        {
+//            Patient patient = new Patient(patientName, animalType);
+//            createdClient = new Client(clientName, patient);
+
+//            return true;
+//        }
+
+//        public Task<bool> RegisterClient(string clientName, string patientName, string animalType)
+//        {
+//            throw new NotImplementedException();
+//        }
+//    }
+//}

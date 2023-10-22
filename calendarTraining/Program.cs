@@ -5,8 +5,6 @@ Console.WriteLine("Hello, World!");
 
 //create client
 //create patient (animal) => assumption of client can not exist without a patient
-ClientManager clientManager = new ClientManager();
-Client myFirstClient = clientManager.CreateClient("roger", "rabbit");
 
 
 
