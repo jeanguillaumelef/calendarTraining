@@ -6,6 +6,7 @@ namespace Domain.Object
     {
         //having the key as DateTime might be resource hungry and not be scalable
         //conceptual weakness of implicit expectation of having booking date time minutes and seconds set to 0 => maybe look to change format for day and separate hour slot
+        //this format has the problem of duplication of information too between the key and the value
         public IDictionary<DateTime, BookingDetails> Bookings;
 
         public BookingManagement()
@@ -14,6 +15,24 @@ namespace Domain.Object
         }
 
         public bool BookHour(Client client, Patient patient, DateTime bookingTime)
+        {
+            bool success = false;
+            if (CheckBookingIsPossible(client, patient,bookingTime))
+            {
+                var booking = new BookingDetails()
+                {
+                    BookingId = Guid.NewGuid(),
+                    ClientId = client.Id,
+                    PatientId = patient.Id
+                };
+
+                success = Bookings.TryAdd(bookingTime, booking);
+            }            
+
+            return success;
+        }
+
+        private bool CheckBookingIsPossible(Client client, Patient patient, DateTime bookingTime)
         {
             if (client == null || patient == null)
             {
@@ -33,10 +52,7 @@ namespace Domain.Object
                 return false;
             }
 
-            var booking = new BookingDetails() { ClientId = client.Id, PatientId = patient.Id };
-            bool success = Bookings.TryAdd(bookingTime, booking);
-
-            return success;
+            return true;
         }
 
         public bool CancelBooking(Guid id, DateTime bookingTime)
