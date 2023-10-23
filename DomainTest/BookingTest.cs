@@ -12,7 +12,7 @@ namespace DomainTest
             int expectedNumberOfBooking = 1;
             Booking booking = new Booking();
             Client client = new Client("Paul");
-            Patient patient = new Patient("roger","rabbit");
+            Patient patient = new Patient("roger", "rabbit");
             client.AddPatient(patient);
             DateTime bookingTime = new DateTime(2083, 10, 12, 11, 00, 00).ToUniversalTime();
 
@@ -60,6 +60,72 @@ namespace DomainTest
             DateTime bookingTime = new DateTime(2083, 10, 12, 11, 00, 00).ToUniversalTime();
 
             var success = booking.BookHour(client, randomPatient, bookingTime);
+
+            Assert.AreEqual(expectedNumberOfBooking, booking.Bookings.Count);
+            Assert.IsFalse(success);
+        }
+
+        [TestMethod]
+        public void Booking_cancelExistingBooking_success()
+        {
+            int expectedNumberOfBooking = 0;
+            int intermediaryExpectedNumberOfBooking = 1;
+            Booking booking = new Booking();
+            Client client = new Client("Paul");
+            Patient patient = new Patient("roger", "rabbit");
+            client.AddPatient(patient);
+            DateTime bookingTime = new DateTime(2083, 10, 12, 11, 00, 00).ToUniversalTime();
+
+            booking.BookHour(client, patient, bookingTime);
+
+            Assert.AreEqual(intermediaryExpectedNumberOfBooking, booking.Bookings.Count);
+
+            bool success = booking.CancelBooking(client.Id, bookingTime);
+
+            Assert.AreEqual(expectedNumberOfBooking, booking.Bookings.Count);
+            Assert.IsTrue(success);
+        }
+
+        [TestMethod]
+        public void Booking_cancelExistingBookingNotBelongingToClient_Fail()
+        {
+            int expectedNumberOfBooking = 1;
+            int intermediaryExpectedNumberOfBooking = 1;
+            Booking booking = new Booking();
+            Client firstClient = new Client("Paul");
+            Patient patient = new Patient("roger", "rabbit");
+            firstClient.AddPatient(patient);
+            DateTime bookingTime = new DateTime(2083, 10, 12, 11, 00, 00).ToUniversalTime();
+
+            Client secondClient = new Client("Paul");
+
+            booking.BookHour(firstClient, patient, bookingTime);
+
+            Assert.AreEqual(intermediaryExpectedNumberOfBooking, booking.Bookings.Count);
+
+            bool success = booking.CancelBooking(secondClient.Id, bookingTime);
+
+            Assert.AreEqual(expectedNumberOfBooking, booking.Bookings.Count);
+            Assert.IsFalse(success);
+        }
+
+        [TestMethod]
+        public void Booking_cancelInexistantBooking_Fail()
+        {
+            int expectedNumberOfBooking = 1;
+            int intermediaryExpectedNumberOfBooking = 1;
+            Booking booking = new Booking();
+            Client client = new Client("Paul");
+            Patient patient = new Patient("roger", "rabbit");
+            client.AddPatient(patient);
+            DateTime bookingTime = new DateTime(2083, 10, 12, 11, 00, 00).ToUniversalTime();
+            DateTime inexistantBookingTime = new DateTime(2083, 10, 12, 12, 00, 00).ToUniversalTime();
+
+            booking.BookHour(client, patient, bookingTime);
+
+            Assert.AreEqual(intermediaryExpectedNumberOfBooking, booking.Bookings.Count);
+
+            bool success = booking.CancelBooking(client.Id, inexistantBookingTime);
 
             Assert.AreEqual(expectedNumberOfBooking, booking.Bookings.Count);
             Assert.IsFalse(success);
