@@ -35,6 +35,13 @@ booking.BookHour(client, patient, dateTimeToCancel);
 booking.CancelBooking(client.Id, dateTimeToCancel);
 
 //modify booking time
+//TODO requires to change the booking to hold only time, clientId + have an Id for each booking
+//TODO add a list of booking as a property of the client
+
+
 //see available booking time
+
+//TODO i used a system which mark what has been booked. Kind of a system of black list and not white list.
+//This means that in the FE to display all available slot, we can put all booked slot on a calendar instead and the rest is available
 
 
