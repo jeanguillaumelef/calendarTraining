@@ -33,7 +33,7 @@ namespace Domain.Object
                 return false;
             }
 
-            var booking = new BookingDetails() { Client = client, Patient = patient };
+            var booking = new BookingDetails() { ClientId = client.Id, Patient = patient };
             bool success = Bookings.TryAdd(bookingTime, booking);
 
             return success;
@@ -52,7 +52,7 @@ namespace Domain.Object
             {
                 //we disable the warning because the responsibility of the value not being null is in the BookHour function
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
-                if (bookingDetail.Client.Id != id)
+                if (bookingDetail.ClientId != id)
                 {
                     cancelSuccess = false;
                 }

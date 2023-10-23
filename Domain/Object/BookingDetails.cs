@@ -2,7 +2,7 @@
 {
     public class BookingDetails
     {
-        public required Client Client { get; set; }
+        public required Guid ClientId { get; set; }
         public required Patient Patient { get; set;}
     }
 }
