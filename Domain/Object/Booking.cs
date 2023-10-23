@@ -33,7 +33,7 @@ namespace Domain.Object
                 return false;
             }
 
-            var booking = new BookingDetails() { ClientId = client.Id, Patient = patient };
+            var booking = new BookingDetails() { ClientId = client.Id, PatientId = patient.Id };
             bool success = Bookings.TryAdd(bookingTime, booking);
 
             return success;

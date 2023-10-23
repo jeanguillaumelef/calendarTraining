@@ -23,8 +23,7 @@ namespace DomainTest
 
             Assert.AreEqual(expectedNumberOfBooking, booking.Bookings.Count);
             Assert.IsNotNull(bookedSlot);
-            Assert.AreEqual(bookedSlot.Patient.Name, patient.Name);
-            Assert.AreEqual(bookedSlot.Patient.AnimalType, patient.AnimalType);
+            Assert.AreEqual(bookedSlot.PatientId, patient.Id);            
             Assert.AreEqual(bookedSlot.ClientId, client.Id);
             Assert.IsTrue(success);
 
@@ -67,8 +66,7 @@ namespace DomainTest
 
             Assert.AreEqual(expectedNumberOfBooking, booking.Bookings.Count);
             Assert.IsNotNull(bookedSlot);
-            Assert.AreEqual(bookedSlot.Patient.Name, patient.Name);
-            Assert.AreEqual(bookedSlot.Patient.AnimalType, patient.AnimalType);
+            Assert.AreEqual(bookedSlot.PatientId, patient.Id);            
             Assert.AreEqual(bookedSlot.ClientId, client.Id);
             Assert.IsFalse(success);
 
