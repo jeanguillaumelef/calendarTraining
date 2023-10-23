@@ -15,7 +15,11 @@ namespace Domain.Object
 
         public bool BookHour(Client client, Patient patient, DateTime bookingTime)
         {
-            //explicitely fail for bookingtime null
+            if (client == null || patient == null)
+            {
+                return false;
+            }
+
             if (bookingTime.ToUniversalTime() < DateTime.UtcNow)
             {
                 return false;
@@ -23,7 +27,7 @@ namespace Domain.Object
 
             var patientCopy = client.GetPatientsCopy();
 
-            //using reference comparison. It is not well readable, might be better to use a Guid comparison
+            //using reference comparison. It is not really explicit/readable, might be better to use a Guid comparison
             if (patientCopy.Contains(patient) == false)
             {
                 return false;
@@ -46,7 +50,7 @@ namespace Domain.Object
             }
             else
             {
-//we disable the warning because the responsibility of the value not being null is in the BookHour function
+                //we disable the warning because the responsibility of the value not being null is in the BookHour function
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
                 if (bookingDetail.Client.Id != id)
                 {

@@ -31,6 +31,50 @@ namespace DomainTest
         }
 
         [TestMethod]
+        public void Booking_bookPatientNotAssociatedToClient_fail()
+        {
+            int expectedNumberOfBooking = 0;
+            Booking booking = new Booking();
+            Client client = new Client("Paul");
+            Patient patient = new Patient("roger", "rabbit");
+            client.AddPatient(patient);
+
+            Patient patient2 = new Patient("roger", "rabbit");
+            DateTime bookingTime = new DateTime(2083, 10, 12, 11, 00, 00).ToUniversalTime();
+
+
+            var success = booking.BookHour(client, patient2, bookingTime);
+
+            Assert.AreEqual(expectedNumberOfBooking, booking.Bookings.Count);
+            Assert.IsFalse(success);
+        }
+
+        [TestMethod]
+        public void Booking_bookSlotAlreadyTaken_fail()
+        {
+            int expectedNumberOfBooking = 1;
+            Booking booking = new Booking();
+            Client client = new Client("Paul");
+            Patient patient = new Patient("roger", "rabbit");
+            client.AddPatient(patient);
+            DateTime bookingTime = new DateTime(2083, 10, 12, 11, 00, 00).ToUniversalTime();
+
+
+            booking.BookHour(client, patient, bookingTime);
+            var success = booking.BookHour(client, patient, bookingTime);
+
+            var bookedSlot = booking.Bookings[bookingTime];
+
+            Assert.AreEqual(expectedNumberOfBooking, booking.Bookings.Count);
+            Assert.IsNotNull(bookedSlot);
+            Assert.AreEqual(bookedSlot.Patient.Name, patient.Name);
+            Assert.AreEqual(bookedSlot.Patient.AnimalType, patient.AnimalType);
+            Assert.AreEqual(bookedSlot.Client.Id, client.Id);
+            Assert.IsFalse(success);
+
+        }
+
+        [TestMethod]
         public void Booking_bookSlotInPast_fail()
         {
             int expectedNumberOfBooking = 0;
