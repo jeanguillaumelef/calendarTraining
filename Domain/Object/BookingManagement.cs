@@ -16,6 +16,7 @@ namespace Domain.Object
         public bool BookHour(Client client, Patient patient, DateTime bookingTime)
         {
             bool success = false;
+
             if (CheckBookingIsPossible(client, patient,bookingTime))
             {
                 var booking = new BookingDetails()
@@ -26,6 +27,7 @@ namespace Domain.Object
                 };
 
                 success = Bookings.TryAdd(bookingTime, booking);
+                client.BookingIds.Add(booking.BookingId);
             }            
 
             return success;

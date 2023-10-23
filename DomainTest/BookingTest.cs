@@ -16,7 +16,6 @@ namespace DomainTest
             client.AddPatient(patient);
             DateTime bookingTime = new DateTime(2083, 10, 12, 11, 00, 00).ToUniversalTime();
 
-
             var success = booking.BookHour(client, patient, bookingTime);
 
             var bookedSlot = booking.Bookings[bookingTime];
@@ -25,8 +24,8 @@ namespace DomainTest
             Assert.IsNotNull(bookedSlot);
             Assert.AreEqual(bookedSlot.PatientId, patient.Id);            
             Assert.AreEqual(bookedSlot.ClientId, client.Id);
+            Assert.AreEqual(client.BookingIds.First(), bookedSlot.BookingId);
             Assert.IsTrue(success);
-
         }
 
         [TestMethod]

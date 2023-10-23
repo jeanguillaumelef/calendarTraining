@@ -9,11 +9,13 @@ namespace Domain
         public string Name { get; }
         //List directly accessible outside the class, the AddPatient function could be bypassed, alternative would be to do by copy
         public IList<Patient> Patients;
+        public IList<Guid> BookingIds;
 
 
         public Client(string clientName)
         {
             Patients = new List<Patient>();
+            BookingIds = new List<Guid>();
             Name = clientName;
             Id = Guid.NewGuid();
         }
