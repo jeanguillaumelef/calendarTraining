@@ -5,7 +5,7 @@ namespace Domain
 {
     public class Client : IClient
     {
-        private HashSet<Patient> patients;
+        private IList<Patient> patients;
 
 
         public Guid Id { get; }
@@ -14,7 +14,7 @@ namespace Domain
 
         public Client(string clientName)
         {
-            patients = new HashSet<Patient>();
+            patients = new List<Patient>();
             Name = clientName;
             Id = Guid.NewGuid();
         }
@@ -47,13 +47,13 @@ namespace Domain
         //the silver lining is that i don't expect this hashset to have more than 5 element
 
         /// <summary>
-        /// Get a copy of the patients hashset
+        /// Get a copy of the patients hashset /!\ shallow copy, not a deep one
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public HashSet<Patient> GetPatientsCopy()
+        public List<Patient> GetPatientsCopy()
         {
-            return new HashSet<Patient>(this.patients);
+            return new List<Patient>(this.patients);
         }
     }
 }
