@@ -35,7 +35,7 @@ booking.BookHour(client, patient, dateTimeToCancel);
 booking.CancelBooking(client.Id, dateTimeToCancel);
 
 //modify booking time
-//TODO add a list of booking as a property of the client
+//TODO add a list of bookingId as a property of the client
 
 
 //see available booking time

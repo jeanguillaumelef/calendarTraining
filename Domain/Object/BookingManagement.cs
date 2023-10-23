@@ -6,7 +6,6 @@ namespace Domain.Object
     {
         //having the key as DateTime might be resource hungry and not be scalable
         //conceptual weakness of implicit expectation of having booking date time minutes and seconds set to 0 => maybe look to change format for day and separate hour slot
-        //this format has the problem of duplication of information too between the key and the value
         public IDictionary<DateTime, BookingDetails> Bookings;
 
         public BookingManagement()
@@ -42,12 +41,10 @@ namespace Domain.Object
             if (bookingTime.ToUniversalTime() < DateTime.UtcNow)
             {
                 return false;
-            }
-
-            var patientCopy = client.GetPatientsCopy();
+            }            
 
             //using reference comparison. It is not really explicit/readable, might be better to use a Guid comparison
-            if (patientCopy.Contains(patient) == false)
+            if (client.Patients.Contains(patient) == false)
             {
                 return false;
             }

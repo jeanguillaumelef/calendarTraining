@@ -16,13 +16,11 @@ namespace DomainTest
 
             Client client = new Client("Paul");
 
-            bool success = client.AddPatient(patient);
-
-            var finalPatients = client.GetPatientsCopy();
+            bool success = client.AddPatient(patient);            
 
             Assert.IsTrue(success);
-            Assert.AreEqual(expectedNumberOfPatient, client.GetPatientsCopy().Count);
-            Assert.IsTrue(finalPatients.Contains(patient));
+            Assert.AreEqual(expectedNumberOfPatient, client.Patients.Count);
+            Assert.IsTrue(client.Patients.Contains(patient));
         }
 
         [TestMethod]
@@ -38,12 +36,10 @@ namespace DomainTest
             bool success = client.AddPatient(patient);
             bool success2 = client.AddPatient(patient);
 
-            var finalPatients = client.GetPatientsCopy();
-
             Assert.IsTrue(success);
             Assert.IsFalse(success2);
-            Assert.AreEqual(expectedNumberOfPatient, finalPatients.Count);
-            Assert.IsTrue(finalPatients.Contains(patient));
+            Assert.AreEqual(expectedNumberOfPatient, client.Patients.Count);
+            Assert.IsTrue(client.Patients.Contains(patient));
         }
 
         [TestMethod]
@@ -60,11 +56,9 @@ namespace DomainTest
             bool success = client.AddPatient(patient);
 #pragma warning restore CS8604 // Possible null reference argument.
 
-            var finalPatients = client.GetPatientsCopy();
-
             Assert.IsFalse(success);
-            Assert.AreEqual(expectedNumberOfPatient, finalPatients.Count);
-            Assert.IsFalse(finalPatients.Contains(patient));
+            Assert.AreEqual(expectedNumberOfPatient, client.Patients.Count);
+            Assert.IsFalse(client.Patients.Contains(patient));
         }
 
         [TestMethod]
@@ -79,11 +73,9 @@ namespace DomainTest
 
             bool success = client.AddPatient(patient);
 
-            var finalPatients = client.GetPatientsCopy();
-
             Assert.IsFalse(success);
-            Assert.AreEqual(expectedNumberOfPatient, finalPatients.Count);
-            Assert.IsFalse(finalPatients.Contains(patient));
+            Assert.AreEqual(expectedNumberOfPatient, client.Patients.Count);
+            Assert.IsFalse(client.Patients.Contains(patient));
         }
 
         [TestMethod]
@@ -98,11 +90,9 @@ namespace DomainTest
 
             bool success = client.AddPatient(patient);
 
-            var finalPatients = client.GetPatientsCopy();
-
             Assert.IsFalse(success);
-            Assert.AreEqual(expectedNumberOfPatient, finalPatients.Count);
-            Assert.IsFalse(finalPatients.Contains(patient));
+            Assert.AreEqual(expectedNumberOfPatient, client.Patients.Count);
+            Assert.IsFalse(client.Patients.Contains(patient));
         }
     }
 }
