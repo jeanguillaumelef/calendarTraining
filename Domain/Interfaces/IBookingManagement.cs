@@ -2,7 +2,7 @@
 
 namespace Domain.Interfaces
 {
-    public interface IBooking
+    public interface IBookingManagement
     {
         bool BookHour(Client client, Patient patient, DateTime bookingTime);
         bool CancelBooking(Guid id, DateTime bookingTime);

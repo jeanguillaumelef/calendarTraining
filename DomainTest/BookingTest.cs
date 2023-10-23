@@ -10,7 +10,7 @@ namespace DomainTest
         public void Booking_bookSlot_success()
         {
             int expectedNumberOfBooking = 1;
-            Booking booking = new Booking();
+            BookingManagement booking = new BookingManagement();
             Client client = new Client("Paul");
             Patient patient = new Patient("roger", "rabbit");
             client.AddPatient(patient);
@@ -33,7 +33,7 @@ namespace DomainTest
         public void Booking_bookPatientNotAssociatedToClient_fail()
         {
             int expectedNumberOfBooking = 0;
-            Booking booking = new Booking();
+            BookingManagement booking = new BookingManagement();
             Client client = new Client("Paul");
             Patient patient = new Patient("roger", "rabbit");
             client.AddPatient(patient);
@@ -52,7 +52,7 @@ namespace DomainTest
         public void Booking_bookSlotAlreadyTaken_fail()
         {
             int expectedNumberOfBooking = 1;
-            Booking booking = new Booking();
+            BookingManagement booking = new BookingManagement();
             Client client = new Client("Paul");
             Patient patient = new Patient("roger", "rabbit");
             client.AddPatient(patient);
@@ -76,7 +76,7 @@ namespace DomainTest
         public void Booking_bookSlotInPast_fail()
         {
             int expectedNumberOfBooking = 0;
-            Booking booking = new Booking();
+            BookingManagement booking = new BookingManagement();
             Client client = new Client("Paul");
             Patient patient = new Patient("roger", "rabbit");
             client.AddPatient(patient);
@@ -93,7 +93,7 @@ namespace DomainTest
         public void Booking_bookSlotWithNotAssociatedPatient_fail()
         {
             int expectedNumberOfBooking = 0;
-            Booking booking = new Booking();
+            BookingManagement booking = new BookingManagement();
             Client client = new Client("Paul");
             Patient patient = new Patient("roger", "rabbit");
 
@@ -112,7 +112,7 @@ namespace DomainTest
         {
             int expectedNumberOfBooking = 0;
             int intermediaryExpectedNumberOfBooking = 1;
-            Booking booking = new Booking();
+            BookingManagement booking = new BookingManagement();
             Client client = new Client("Paul");
             Patient patient = new Patient("roger", "rabbit");
             client.AddPatient(patient);
@@ -133,7 +133,7 @@ namespace DomainTest
         {
             int expectedNumberOfBooking = 1;
             int intermediaryExpectedNumberOfBooking = 1;
-            Booking booking = new Booking();
+            BookingManagement booking = new BookingManagement();
             Client firstClient = new Client("Paul");
             Patient patient = new Patient("roger", "rabbit");
             firstClient.AddPatient(patient);
@@ -156,7 +156,7 @@ namespace DomainTest
         {
             int expectedNumberOfBooking = 1;
             int intermediaryExpectedNumberOfBooking = 1;
-            Booking booking = new Booking();
+            BookingManagement booking = new BookingManagement();
             Client client = new Client("Paul");
             Patient patient = new Patient("roger", "rabbit");
             client.AddPatient(patient);

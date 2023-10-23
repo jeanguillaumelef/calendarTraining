@@ -2,13 +2,13 @@
 
 namespace Domain.Object
 {
-    public class Booking : IBooking
+    public class BookingManagement : IBookingManagement
     {
         //having the key as DateTime might be resource hungry and not be scalable
         //conceptual weakness of implicit expectation of having booking date time minutes and seconds set to 0 => maybe look to change format for day and separate hour slot
         public IDictionary<DateTime, BookingDetails> Bookings;
 
-        public Booking()
+        public BookingManagement()
         {
             Bookings = new Dictionary<DateTime, BookingDetails>();
         }
