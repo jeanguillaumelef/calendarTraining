@@ -16,7 +16,7 @@ namespace DomainTest
             client.AddPatient(patient);
             DateTime bookingTime = new DateTime(2083, 10, 12, 11, 00, 00).ToUniversalTime();
 
-            var success = booking.BookHour(client, patient, bookingTime);
+            var success = booking.BookHour(client, patient.Id, bookingTime);
 
             var bookedSlot = booking.Bookings[bookingTime];
 
@@ -24,7 +24,7 @@ namespace DomainTest
             Assert.IsNotNull(bookedSlot);
             Assert.AreEqual(bookedSlot.PatientId, patient.Id);            
             Assert.AreEqual(bookedSlot.ClientId, client.Id);
-            Assert.AreEqual(client.BookingIds.First(), bookedSlot.BookingId);
+            Assert.AreEqual(client.BookingTimes.First(), bookingTime);
             Assert.IsTrue(success);
         }
 
@@ -41,7 +41,7 @@ namespace DomainTest
             DateTime bookingTime = new DateTime(2083, 10, 12, 11, 00, 00).ToUniversalTime();
 
 
-            var success = booking.BookHour(client, patient2, bookingTime);
+            var success = booking.BookHour(client, patient2.Id, bookingTime);
 
             Assert.AreEqual(expectedNumberOfBooking, booking.Bookings.Count);
             Assert.IsFalse(success);
@@ -58,8 +58,8 @@ namespace DomainTest
             DateTime bookingTime = new DateTime(2083, 10, 12, 11, 00, 00).ToUniversalTime();
 
 
-            booking.BookHour(client, patient, bookingTime);
-            var success = booking.BookHour(client, patient, bookingTime);
+            booking.BookHour(client, patient.Id, bookingTime);
+            var success = booking.BookHour(client, patient.Id, bookingTime);
 
             var bookedSlot = booking.Bookings[bookingTime];
 
@@ -82,7 +82,7 @@ namespace DomainTest
             DateTime bookingTime = new DateTime(1983, 10, 12, 11, 00, 00).ToUniversalTime();
 
 
-            var success = booking.BookHour(client, patient, bookingTime);
+            var success = booking.BookHour(client, patient.Id, bookingTime);
 
             Assert.AreEqual(expectedNumberOfBooking, booking.Bookings.Count);
             Assert.IsFalse(success);
@@ -100,7 +100,7 @@ namespace DomainTest
             client.AddPatient(patient);
             DateTime bookingTime = new DateTime(2083, 10, 12, 11, 00, 00).ToUniversalTime();
 
-            var success = booking.BookHour(client, randomPatient, bookingTime);
+            var success = booking.BookHour(client, randomPatient.Id, bookingTime);
 
             Assert.AreEqual(expectedNumberOfBooking, booking.Bookings.Count);
             Assert.IsFalse(success);
@@ -117,7 +117,7 @@ namespace DomainTest
             client.AddPatient(patient);
             DateTime bookingTime = new DateTime(2083, 10, 12, 11, 00, 00).ToUniversalTime();
 
-            booking.BookHour(client, patient, bookingTime);
+            booking.BookHour(client, patient.Id, bookingTime);
 
             Assert.AreEqual(intermediaryExpectedNumberOfBooking, booking.Bookings.Count);
 
@@ -140,7 +140,7 @@ namespace DomainTest
 
             Client secondClient = new Client("Paul");
 
-            booking.BookHour(firstClient, patient, bookingTime);
+            booking.BookHour(firstClient, patient.Id, bookingTime);
 
             Assert.AreEqual(intermediaryExpectedNumberOfBooking, booking.Bookings.Count);
 
@@ -162,7 +162,7 @@ namespace DomainTest
             DateTime bookingTime = new DateTime(2083, 10, 12, 11, 00, 00).ToUniversalTime();
             DateTime inexistantBookingTime = new DateTime(2083, 10, 12, 12, 00, 00).ToUniversalTime();
 
-            booking.BookHour(client, patient, bookingTime);
+            booking.BookHour(client, patient.Id, bookingTime);
 
             Assert.AreEqual(intermediaryExpectedNumberOfBooking, booking.Bookings.Count);
 
@@ -170,6 +170,29 @@ namespace DomainTest
 
             Assert.AreEqual(expectedNumberOfBooking, booking.Bookings.Count);
             Assert.IsFalse(success);
+        }
+
+        [TestMethod]
+        public void Booking_modifyExistingBooking_success()
+        {
+            int expectedNumberOfBooking = 1;
+            BookingManagement booking = new BookingManagement();
+            Client client = new Client("Paul");
+            Patient patient = new Patient("roger", "rabbit");
+            client.AddPatient(patient);
+            DateTime bookingTime = new DateTime(2083, 10, 12, 11, 00, 00).ToUniversalTime();            
+
+            booking.BookHour(client, patient.Id, bookingTime);
+
+            Assert.AreEqual(expectedNumberOfBooking, booking.Bookings.Count);
+
+            DateTime newBookingTime = new DateTime(2083, 10, 12, 13, 00, 00).ToUniversalTime();
+            bool success = booking.ModifyBookingTime(client, bookingTime, newBookingTime);             
+
+            Assert.AreEqual(expectedNumberOfBooking, booking.Bookings.Count);
+            Assert.IsFalse(booking.Bookings.ContainsKey(bookingTime));
+            Assert.IsTrue(booking.Bookings.ContainsKey(newBookingTime));
+            Assert.IsTrue(success);
         }
     }
 }

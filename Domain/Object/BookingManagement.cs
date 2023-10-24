@@ -13,29 +13,30 @@ namespace Domain.Object
             Bookings = new Dictionary<DateTime, BookingDetails>();
         }
 
-        public bool BookHour(Client client, Patient patient, DateTime bookingTime)
+        //TODO refactor to have check and action separate
+        public bool BookHour(Client client, Guid patientId, DateTime bookingTime)
         {
             bool success = false;
 
-            if (CheckBookingIsPossible(client, patient,bookingTime))
+            if (CheckBookingIsPossible(client, patientId, bookingTime))
             {
                 var booking = new BookingDetails()
                 {
                     BookingId = Guid.NewGuid(),
                     ClientId = client.Id,
-                    PatientId = patient.Id
+                    PatientId = patientId
                 };
 
                 success = Bookings.TryAdd(bookingTime, booking);
-                client.BookingIds.Add(booking.BookingId);
-            }            
+                client.BookingTimes.Add(bookingTime);
+            }
 
             return success;
         }
 
-        private bool CheckBookingIsPossible(Client client, Patient patient, DateTime bookingTime)
+        private bool CheckBookingIsPossible(Client client, Guid patientId, DateTime bookingTime)
         {
-            if (client == null || patient == null)
+            if (client == null || patientId == Guid.Empty)
             {
                 return false;
             }
@@ -43,10 +44,9 @@ namespace Domain.Object
             if (bookingTime.ToUniversalTime() < DateTime.UtcNow)
             {
                 return false;
-            }            
+            }
 
-            //using reference comparison. It is not really explicit/readable, might be better to use a Guid comparison
-            if (client.Patients.Contains(patient) == false)
+            if (client.Patients.Count(x => x.Id == patientId) == 0)
             {
                 return false;
             }
@@ -54,7 +54,7 @@ namespace Domain.Object
             return true;
         }
 
-        public bool CancelBooking(Guid id, DateTime bookingTime)
+        public bool CancelBooking(Guid clientId, DateTime bookingTime)
         {
             bool cancelSuccess = false;
             var valueFound = Bookings.TryGetValue(bookingTime, out var bookingDetail);
@@ -65,9 +65,7 @@ namespace Domain.Object
             }
             else
             {
-                //we disable the warning because the responsibility of the value not being null is in the BookHour function
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-                if (bookingDetail.ClientId != id)
+                if (bookingDetail==null || bookingDetail.ClientId != clientId)
                 {
                     cancelSuccess = false;
                 }
@@ -75,10 +73,30 @@ namespace Domain.Object
                 {
                     cancelSuccess = Bookings.Remove(bookingTime);
                 }
-#pragma warning restore CS8602 // Dereference of a possibly null reference.                
             }
 
             return cancelSuccess;
+        }
+
+        public bool ModifyBookingTime(Client client, DateTime bookingTime, DateTime newBookingTime)
+        {
+            bool isModifyBookingSuccess = false;
+            isModifyBookingSuccess = Bookings.TryGetValue(bookingTime, out var bookingDetail);
+
+            if (isModifyBookingSuccess == false || bookingDetail == null)
+            {
+                return isModifyBookingSuccess;
+            }
+
+            isModifyBookingSuccess = CancelBooking(bookingDetail.ClientId, bookingTime);
+
+            if (isModifyBookingSuccess == false) { return isModifyBookingSuccess; }
+
+            isModifyBookingSuccess = BookHour(client, bookingDetail.PatientId, newBookingTime);
+
+            if (isModifyBookingSuccess == false) { return isModifyBookingSuccess; }
+
+            return isModifyBookingSuccess;
         }
     }
 }

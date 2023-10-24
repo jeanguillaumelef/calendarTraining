@@ -27,15 +27,15 @@ else
 var dateTimeToCancel = new DateTime(2083, 10, 12, 12, 00, 00).ToUniversalTime();
 
 BookingManagement booking = new BookingManagement();
-booking.BookHour(client, patient, new DateTime(2083, 10, 12, 11, 00, 00).ToUniversalTime());
-booking.BookHour(client, patient, dateTimeToCancel);
+booking.BookHour(client, patient.Id, new DateTime(2083, 10, 12, 11, 00, 00).ToUniversalTime());
+booking.BookHour(client, patient.Id, dateTimeToCancel);
 
 //cancel a booking
 
 booking.CancelBooking(client.Id, dateTimeToCancel);
 
 //modify booking time
-//TODO add a list of bookingId as a property of the client
+booking.ModifyBookingTime(Client)
 
 
 //see available booking time
